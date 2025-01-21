@@ -1,14 +1,14 @@
-package main
+package handlers
 
 import (
+	"myapp/pkg/render"
 	"net/http"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "home.page.tmpl")
+	render.RenderTemplate(w, "home.page.tmpl")
 }
 
 func About(w http.ResponseWriter, r *http.Request) {
-	renderTemplate(w, "about.page.tmpl")
+	render.RenderTemplate(w, "about.page.tmpl")
 }
-
