@@ -15,7 +15,7 @@
         font-size: 80%;
       }
       .room-image {
-       max-width: 50%;
+        max-width: 50%;
       }
     </style>
   </head>
@@ -61,9 +61,9 @@
                <h1 class="mt-5">Search for the Availability</h1>
 
                <form action="reservation.html" method="get">
-                <div class="form-row">
-                  <div class="col">
-                    <div class form-group>
+                <div class="row"> <!-- Use row instead of form-row -->
+                  <div class="col-6"> <!-- Add col-6 for half-width columns -->
+                    <div class="form-group">
                       <label for="start_date" class="form-label">Starting Date</label>
                       <input
                         required
@@ -79,7 +79,7 @@
                     </div>
                   </div>
                 
-                  <div class="col">
+                  <div class="col-6"> <!-- Add col-6 for the other half -->
                     <div class="form-group">
                       <label for="end_date" class="form-label">Ending Date</label>
                       <input
@@ -93,10 +93,11 @@
                       <small id="endDateHelp" class="form-text text-muted">
                         Enter your ending date in the form of YYYY-MM-DD
                       </small>
-
                     </div>
                   </div>
                 </div>
+                
+                
                 
                 <button type="submit" class="btn btn-primary">Search Availability</button>
               </form>
@@ -114,6 +115,13 @@
           <div class="col">
               Right
           </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+      </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
+    <script>
+      console.log("I'm printing my web file.")// Add your custom script here
+      alert("hello")
+    </script>
   </body>
 </html>
