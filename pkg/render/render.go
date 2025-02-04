@@ -8,6 +8,8 @@ import (
 	"myapp/pkg/models"
 	"net/http"
 	"path/filepath"
+
+	"github.com/justinas/nosurf"
 )
 
 var app *config.AppConfig
@@ -17,11 +19,12 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 
 }
-func addDefaultData(td *models.TemplateData) *models.TemplateData {
+func addDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	td.CSRFToken = nosurf.Token(r)
 	return td
 }
 
-func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
+func RenderTemplate(w http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) {
 	var tc map[string]*template.Template
 	if app.UseCache {
 		// create a template cache
@@ -37,7 +40,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData)
 
 	buf := new(bytes.Buffer)
 
-	td = addDefaultData(td)
+	td = addDefaultData(td, r)
 
 	_ = t.Execute(buf, td) //將渲染結果輸出到指定目標
 
