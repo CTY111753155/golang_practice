@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/css/datepicker-bs5.min.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
     <link rel="stylesheet" type="text/css" href="static/css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
       .my-footer {
         height: 5em;
@@ -62,7 +61,15 @@
               </li>
               <li class="nav-item">
                 {{if eq .IsAuthenticated 1}}
-                 <a class="nav-link" href="/user/logout" aria-disabled="true">LogOut</a>
+                    <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Admin
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/admin/dashboard">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+                      </ul>
+                     </li>
                 {{else}}
                 <a class="nav-link" href="/user/login" aria-disabled="true">Login</a>
                 {{end}}
@@ -90,6 +97,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.3.4/dist/js/datepicker-full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/notie"></script>
     <script src="/static/js/app.js"></script>
 
@@ -133,17 +141,17 @@
         });
       }
 
-      {{with.Error}}
-      notify({{.}}, "error")
-      {{end}}
+      {{with .Error}}
+        notify("{{.}}", "error")
+        {{end}}
 
-      {{with.Flash}}
-      notify({{.}}, "success")
-      {{end}}
+        {{with .Flash}}
+        notify("{{.}}", "success")
+        {{end}}
 
-      {{with.Warning}}
-      notify({{.}}, "warning")
-      {{end}}
+        {{with .Warning}}
+        notify("{{.}}", "warning")
+        {{end}}
     </script>
   </body>
 </html>

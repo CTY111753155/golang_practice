@@ -5,22 +5,51 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
+	"log"
 	"myapp/internal/config"
 	"myapp/internal/models"
 	"net/http"
 	"path/filepath"
+	"time"
 
 	"github.com/justinas/nosurf"
 )
 
-var functions = template.FuncMap{}
+var functions = template.FuncMap{
+	"humanDate":  HumanDate,
+	"formatDate": FormatDate,
+	"iterate":    Iterate,
+	"add":        Add,
+}
 
 var app *config.AppConfig
 var pathToTemplates = "./templates"
 
+func Add(a, b int) int {
+	return a + b
+}
+
+// Iterate is a function that generates a slice of integers starting at 0 and ending at count
+func Iterate(count int) []int {
+	var items []int
+	for i := 0; i < count; i++ {
+		items = append(items, i)
+	}
+	return items
+}
+
 // NewRenderer sets the config for the template package
 func NewRenderer(a *config.AppConfig) {
 	app = a
+}
+
+// HumanDate returns time in YYYY-MM-DD format
+func HumanDate(t time.Time) string {
+	return t.Format("2006-01-02")
+}
+
+func FormatDate(t time.Time, f string) string {
+	return t.Format(f)
 }
 
 // AddDefaultData adds data for all templates
@@ -70,11 +99,11 @@ func Template(w http.ResponseWriter, r *http.Request, tmpl string, td *models.Te
 
 // CreateTemplateCache creates a template cache as a map
 func CreateTemplateCache() (map[string]*template.Template, error) {
-
 	myCache := map[string]*template.Template{}
 
 	pages, err := filepath.Glob(fmt.Sprintf("%s/*.page.tmpl", pathToTemplates))
 	if err != nil {
+		log.Println("Error finding page templates:", err)
 		return myCache, err
 	}
 
@@ -82,17 +111,20 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 		name := filepath.Base(page)
 		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
 		if err != nil {
+			log.Printf("Error parsing page template %s: %v\n", name, err)
 			return myCache, err
 		}
 
 		matches, err := filepath.Glob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 		if err != nil {
+			log.Println("Error finding layout templates:", err)
 			return myCache, err
 		}
 
 		if len(matches) > 0 {
 			ts, err = ts.ParseGlob(fmt.Sprintf("%s/*.layout.tmpl", pathToTemplates))
 			if err != nil {
+				log.Println("Error parsing layout templates:", err)
 				return myCache, err
 			}
 		}
@@ -100,5 +132,6 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 		myCache[name] = ts
 	}
 
+	log.Println("Template cache created successfully!")
 	return myCache, nil
 }
