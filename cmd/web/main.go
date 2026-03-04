@@ -18,7 +18,12 @@ import (
 	"github.com/alexedwards/scs/v2"
 )
 
-const portNumber = ":3000"
+func getPort() string {
+	if p := os.Getenv("PORT"); p != "" {
+		return ":" + p
+	}
+	return ":3000"
+}
 
 var app config.AppConfig
 
@@ -39,6 +44,7 @@ func main() {
 	fmt.Println("Starting mail listener...")
 	listenForMail()
 
+	portNumber := getPort()
 	fmt.Println(fmt.Sprintf("Starting application on port %s", portNumber))
 
 	srv := &http.Server{
@@ -70,8 +76,28 @@ func run() (*driver.DB, error) {
 
 	flag.Parse()
 
+	// 支援從環境變數讀取（Render、Heroku 等只給 env 的環境）
+	if v := os.Getenv("DB_NAME"); v != "" {
+		*dbName = v
+	}
+	if v := os.Getenv("DB_USER"); v != "" {
+		*dbUser = v
+	}
+	if v := os.Getenv("DB_PASS"); v != "" {
+		*dbPass = v
+	}
+	if v := os.Getenv("DB_HOST"); v != "" {
+		*dbHost = v
+	}
+	if v := os.Getenv("DB_PORT"); v != "" {
+		*dbPort = v
+	}
+	if v := os.Getenv("DB_SSL"); v != "" {
+		*dbSSL = v
+	}
+
 	if *dbName == "" || *dbUser == "" {
-		fmt.Println("Missing required flags")
+		fmt.Println("Missing required flags or env: DB_NAME, DB_USER (and optionally DB_PASS, DB_HOST, DB_PORT, DB_SSL)")
 		os.Exit(1)
 	}
 
