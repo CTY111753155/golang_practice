@@ -1,3 +1,7 @@
 .idea
 staic/images
 config/database.yml
+
+# Environment files
+.env
+.env.*

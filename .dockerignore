@@ -1,0 +1,38 @@
+# Git
+.git
+.gitignore
+
+# 构建产物与本地运行文件
+booking
+*.exe
+*.dll
+*.so
+*.dylib
+
+# 测试与覆盖率
+*.test
+*.out
+coverage.html
+.coverage
+
+# IDE 与临时文件
+.idea
+.vscode
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 文档与脚本（不影响镜像运行）
+README.md
+run.sh
+*.md
+
+# Docker 自身
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# 其他
+.env
+.env.*
